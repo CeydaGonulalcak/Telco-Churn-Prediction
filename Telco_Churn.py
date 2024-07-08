@@ -1,65 +1,9 @@
 
-##############################
+##########################################
 # Telco Customer Churn Feature Engineering
-##############################
-
-# Problem : Şirketi terk edecek müşterileri tahmin edebilecek bir makine öğrenmesi modeli geliştirilmesi istenmektedir.
-# Modeli geliştirmeden önce gerekli olan veri analizi ve özellik mühendisliği adımlarını gerçekleştirmeniz beklenmektedir.
-
-# Telco müşteri churn verileri, üçüncü çeyrekte Kaliforniya'daki 7043 müşteriye ev telefonu ve İnternet hizmetleri sağlayan
-# hayali bir telekom şirketi hakkında bilgi içerir. Hangi müşterilerin hizmetlerinden ayrıldığını, kaldığını veya hizmete kaydolduğunu içermektedir.
-
-# 21 Değişken 7043 Gözlem
-
-# CustomerId : Müşteri İd’si
-# Gender : Cinsiyet
-# SeniorCitizen : Müşterinin yaşlı olup olmadığı (1, 0)
-# Partner : Müşterinin bir ortağı olup olmadığı (Evet, Hayır) ? Evli olup olmama
-# Dependents : Müşterinin bakmakla yükümlü olduğu kişiler olup olmadığı (Evet, Hayır) (Çocuk, anne, baba, büyükanne)
-# tenure : Müşterinin şirkette kaldığı ay sayısı
-# PhoneService : Müşterinin telefon hizmeti olup olmadığı (Evet, Hayır)
-# MultipleLines : Müşterinin birden fazla hattı olup olmadığı (Evet, Hayır, Telefon hizmeti yok)
-# InternetService : Müşterinin internet servis sağlayıcısı (DSL, Fiber optik, Hayır)
-# OnlineSecurity : Müşterinin çevrimiçi güvenliğinin olup olmadığı (Evet, Hayır, İnternet hizmeti yok)
-# OnlineBackup : Müşterinin online yedeğinin olup olmadığı (Evet, Hayır, İnternet hizmeti yok)
-# DeviceProtection : Müşterinin cihaz korumasına sahip olup olmadığı (Evet, Hayır, İnternet hizmeti yok)
-# TechSupport : Müşterinin teknik destek alıp almadığı (Evet, Hayır, İnternet hizmeti yok)
-# StreamingTV : Müşterinin TV yayını olup olmadığı (Evet, Hayır, İnternet hizmeti yok) Müşterinin, bir üçüncü taraf sağlayıcıdan televizyon programları yayınlamak için İnternet hizmetini kullanıp kullanmadığını gösterir
-# StreamingMovies : Müşterinin film akışı olup olmadığı (Evet, Hayır, İnternet hizmeti yok) Müşterinin bir üçüncü taraf sağlayıcıdan film akışı yapmak için İnternet hizmetini kullanıp kullanmadığını gösterir
-# Contract : Müşterinin sözleşme süresi (Aydan aya, Bir yıl, İki yıl)
-# PaperlessBilling : Müşterinin kağıtsız faturası olup olmadığı (Evet, Hayır)
-# PaymentMethod : Müşterinin ödeme yöntemi (Elektronik çek, Posta çeki, Banka havalesi (otomatik), Kredi kartı (otomatik))
-# MonthlyCharges : Müşteriden aylık olarak tahsil edilen tutar
-# TotalCharges : Müşteriden tahsil edilen toplam tutar
-# Churn : Müşterinin kullanıp kullanmadığı (Evet veya Hayır) - Geçen ay veya çeyreklik içerisinde ayrılan müşteriler
+##########################################
 
 
-# Her satır benzersiz bir müşteriyi temsil etmekte.
-# Değişkenler müşteri hizmetleri, hesap ve demografik veriler hakkında bilgiler içerir.
-# Müşterilerin kaydolduğu hizmetler - phone, multiple lines, internet, online security, online backup, device protection, tech support, and streaming TV and movies
-# Müşteri hesap bilgileri – ne kadar süredir müşteri oldukları, sözleşme, ödeme yöntemi, kağıtsız faturalandırma, aylık ücretler ve toplam ücretler
-# Müşteriler hakkında demografik bilgiler - cinsiyet, yaş aralığı ve ortakları ve bakmakla yükümlü oldukları kişiler olup olmadığı
-
-
-# GÖREV 1: KEŞİFCİ VERİ ANALİZİ
-           # Adım 1: Genel resmi inceleyiniz.
-           # Adım 2: Numerik ve kategorik değişkenleri yakalayınız.
-           # Adım 3: Numerik ve kategorik değişkenlerin analizini yapınız.
-           # Adım 4: Hedef değişken analizi yapınız. (Kategorik değişkenlere göre hedef değişkenin ortalaması, hedef değişkene göre numerik değişkenlerin ortalaması)
-           # Adım 5: Aykırı gözlem analizi yapınız.
-           # Adım 6: Eksik gözlem analizi yapınız.
-           # Adım 7: Korelasyon analizi yapınız.
-
-# GÖREV 2: FEATURE ENGINEERING
-           # Adım 1:  Eksik ve aykırı değerler için gerekli işlemleri yapınız.
-           # işlemleri uygulayabilirsiniz.
-           # Adım 2: Yeni değişkenler oluşturunuz.
-           # Adım 3:  Encoding işlemlerini gerçekleştiriniz.
-           # Adım 4: Numerik değişkenler için standartlaştırma yapınız.
-           # Adım 5: Model oluşturunuz.
-
-
-# Gerekli Kütüphane ve Fonksiyonlar
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -73,7 +17,6 @@ from sklearn.ensemble import RandomForestClassifier
 from catboost import CatBoostClassifier
 from lightgbm import LGBMClassifier
 from xgboost import XGBClassifier
-
 
 import warnings
 warnings.simplefilter(action="ignore")
@@ -95,13 +38,11 @@ df["Churn"] = df["Churn"].apply(lambda x : 1 if x == "Yes" else 0)
 
 df.head()
 
-##################################
-# GÖREV 1: KEŞİFCİ VERİ ANALİZİ
-##################################
 
-##################################
-# GENEL RESİM
-##################################
+
+###################################
+# TASK 1: EXPLORATORY DATA ANALYSIS
+###################################
 
 def check_df(dataframe, head=5):
     print("##################### Shape #####################")
@@ -120,48 +61,8 @@ def check_df(dataframe, head=5):
 check_df(df)
 
 
-
-##################################
-# NUMERİK VE KATEGORİK DEĞİŞKENLERİN YAKALANMASI
-##################################
-
 def grab_col_names(dataframe, cat_th=10, car_th=20):
-    """
-
-    Veri setindeki kategorik, numerik ve kategorik fakat kardinal değişkenlerin isimlerini verir.
-    Not: Kategorik değişkenlerin içerisine numerik görünümlü kategorik değişkenler de dahildir.
-
-    Parameters
-    ------
-        dataframe: dataframe
-                Değişken isimleri alınmak istenilen dataframe
-        cat_th: int, optional
-                numerik fakat kategorik olan değişkenler için sınıf eşik değeri
-        car_th: int, optional
-                kategorik fakat kardinal değişkenler için sınıf eşik değeri
-
-    Returns
-    ------
-        cat_cols: list
-                Kategorik değişken listesi
-        num_cols: list
-                Numerik değişken listesi
-        cat_but_car: list
-                Kategorik görünümlü kardinal değişken listesi
-
-    Examples
-    ------
-        import seaborn as sns
-        df = sns.load_dataset("iris")
-        print(grab_col_names(df))
-
-
-    Notes
-    ------
-        cat_cols + num_cols + cat_but_car = toplam değişken sayısı
-        num_but_cat cat_cols'un içerisinde.
-
-    """
+   
     # cat_cols, cat_but_car
     cat_cols = [col for col in dataframe.columns if dataframe[col].dtypes == "O"]
     num_but_cat = [col for col in dataframe.columns if dataframe[col].nunique() < cat_th and dataframe[col].dtypes != "O"]
@@ -191,10 +92,6 @@ cat_but_car
 
 
 
-##################################
-# KATEGORİK DEĞİŞKENLERİN ANALİZİ
-##################################
-
 def cat_summary(dataframe, col_name, plot=False):
     print(pd.DataFrame({col_name: dataframe[col_name].value_counts(),
                         "Ratio": 100 * dataframe[col_name].value_counts() / len(dataframe)}))
@@ -207,21 +104,17 @@ for col in cat_cols:
     cat_summary(df, col)
 
 
-# Veri setimizdeki müşterilerin yaklaşık yarısı erkek, diğer yarısı kadındır.
-# Müşterilerin yaklaşık %50'sinin bir ortağı var (evli)
-# Toplam müşterilerin yalnızca %30'unun bakmakla yükümlü olduğu kişiler var.
-# Müşterilerin %90'u telefon hizmeti almaktadır.
-# Telefon hizmeti alan %90'lık kesimin  yüzde 53'ü birden fazla hatta sahip değil
-# Internet servis sağlayıcısı bulunmayan %21'lik bir kesim var
-# Müşterilerin çoğu aydan aya sözleşme yapıyor. 1 yıllık ve 2 yıllık sözleşmelerde yakın sayıda  müşteri bulunmakta.
-# Müşterilerin %60 i kağıtsız faturası bulunmakta
-# Müşterilerin yaklaşık %26'sı geçen ay platformdan ayrılmış
-# Veri setinin  %16'sı yaşlı  müşterilerden oluşmaktadır Dolayısıyla verilerdeki müşterilerin çoğu genç
+# Approximately half of the customers in our data set are male and the other half are female.
+# Approximately 50% of customers have a partner (married)
+# Only 30% of total customers have dependents.
+# 90% of customers receive telephone service.
+# 53 percent of the 90 percent who receive phone service do not have more than one line
+# There are 21% who do not have an internet service provider
+# Most customers are on month-to-month contracts. There are a similar number of customers on 1-year and 2-year contracts.
+# 60% of customers have paperless invoices
+# Approximately 26% of customers left the platform in the last month
+# 16% of the data set consists of elderly customers. Therefore, most of the customers in the data are young
 
-
-##################################
-# NUMERİK DEĞİŞKENLERİN ANALİZİ
-##################################
 
 def num_summary(dataframe, numerical_col, plot=False):
     quantiles = [0.05, 0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90, 0.95, 0.99]
@@ -236,29 +129,11 @@ def num_summary(dataframe, numerical_col, plot=False):
 for col in num_cols:
     num_summary(df, col, plot=True)
 
-# Tenure'e bakıldığında 1 aylık müşterilerin çok fazla olduğunu
-# ardından da 70 aylık müşterilerin geldiğini görüyoruz.
-
-
-
-##################################
-# NUMERİK DEĞİŞKENLERİN TARGET GÖRE ANALİZİ
-##################################
-
 def target_summary_with_num(dataframe, target, numerical_col):
     print(dataframe.groupby(target).agg({numerical_col: "mean"}), end="\n\n\n")
 
 for col in num_cols:
     target_summary_with_num(df, "Churn", col)
-
-# Tenure ve Churn ilişkisine baktığımızda churn olmayan müşterilerin daha uzun süredir müşteri olduklarını görüyoruz
-# monthlycharges ve Churn incelendiğinde churn olan müşterilerin ortalama aylık ödemeleri daha fazla
-
-
-##################################
-# KATEGORİK DEĞİŞKENLERİN TARGET GÖRE ANALİZİ
-##################################
-
 
 def target_summary_with_cat(dataframe, target, categorical_col):
     print(categorical_col)
@@ -270,23 +145,19 @@ for col in cat_cols:
     target_summary_with_cat(df, "Churn", col)
 
 
-# Kadın ve erkeklerde churn yüzdesi neredeyse eşit
-# Partner ve dependents'i olan müşterilerin churn oranı daha düşük
-# PhoneServise ve MultipleLines'da fark yok
-# Fiber Optik İnternet Servislerinde kayıp oranı çok daha yüksek
-# No OnlineSecurity , OnlineBackup ve TechSupport gibi hizmetleri olmayan müşterilerin churn oranı yüksek
-# Bir veya iki yıllık sözleşmeli Müşterilere kıyasla, aylık aboneliği olan Müşterilerin daha büyük bir yüzdesi churn
-# Kağıtsız faturalandırmaya sahip olanların churn oranı daha fazla
-# ElectronicCheck PaymentMethod'a sahip müşteriler, diğer seçeneklere kıyasla platformdan daha fazla ayrılma eğiliminde
-# Yaşlı müşterilerde churn yüzdesi daha yüksektir
+# The percentage of churn in men and women is almost equal
+# Customers with partners and dependents have a lower churn rate
+# No difference in PhoneServise and MultipleLines
+# Loss rate is much higher in Fiber Optic Internet Services
+# Customers who do not have services such as No OnlineSecurity, OnlineBackup and TechSupport have a high churn rate
+# A larger percentage of Customers with monthly subscriptions churn, compared to Customers with one- or two-year contracts
+# Those with paperless billing have a higher churn rate
+# Customers with ElectronicCheck PaymentMethod tend to leave the platform more than other options
+# Churn percentage is higher in older customers
 
-##################################
-# KORELASYON
-##################################
 
 df[num_cols].corr()
 
-# Korelasyon Matrisi
 f, ax = plt.subplots(figsize=[18, 13])
 sns.heatmap(df[num_cols].corr(), annot=True, fmt=".2f", ax=ax, cmap="magma")
 ax.set_title("Correlation Matrix", fontsize=20)
@@ -299,11 +170,7 @@ df.corrwith(df["Churn"]).sort_values(ascending=False)
 
 
 ##################################
-# GÖREV 2: FEATURE ENGINEERING
-##################################
-
-##################################
-# EKSİK DEĞER ANALİZİ
+# TASK 2: FEATURE ENGINEERING
 ##################################
 
 df.isnull().sum()
@@ -330,11 +197,6 @@ df.iloc[df[df["TotalCharges"].isnull()].index,19] = df[df["TotalCharges"].isnull
 df["tenure"] = df["tenure"] + 1
 df[df["tenure"]==1]
 
-# TotalCharges direkt sıfıra eşitleyebiliriz.
-
-##################################
-# AYKIRI DEĞER ANALİZİ
-##################################
 
 def outlier_thresholds(dataframe, col_name, q1=0.05, q3=0.95):
     quartile1 = dataframe[col_name].quantile(q1)
@@ -356,18 +218,11 @@ def replace_with_thresholds(dataframe, variable, q1=0.05, q3=0.95):
     dataframe.loc[(dataframe[variable] < low_limit), variable] = low_limit
     dataframe.loc[(dataframe[variable] > up_limit), variable] = up_limit
 
-
-# Aykırı Değer Analizi ve Baskılama İşlemi
 for col in num_cols:
     print(col, check_outlier(df, col))
     if check_outlier(df, col):
         replace_with_thresholds(df, col)
 
-
-
-##################################
-# BASE MODEL KURULUMU
-##################################
 
 dff = df.copy()
 cat_cols = [col for col in cat_cols if col not in ["Churn"]]
@@ -450,10 +305,9 @@ for name, model in models:
 
 
 ##################################
-# ÖZELLİK ÇIKARIMI
+# FEATURE EXTRACTION
 ##################################
 
-# Tenure  değişkeninden yıllık kategorik değişken oluşturma
 df.loc[(df["tenure"]>=0) & (df["tenure"]<=12),"NEW_TENURE_YEAR"] = "0-1 Year"
 df.loc[(df["tenure"]>12) & (df["tenure"]<=24),"NEW_TENURE_YEAR"] = "1-2 Year"
 df.loc[(df["tenure"]>24) & (df["tenure"]<=36),"NEW_TENURE_YEAR"] = "2-3 Year"
@@ -462,35 +316,25 @@ df.loc[(df["tenure"]>48) & (df["tenure"]<=60),"NEW_TENURE_YEAR"] = "4-5 Year"
 df.loc[(df["tenure"]>60) & (df["tenure"]<=72),"NEW_TENURE_YEAR"] = "5-6 Year"
 
 
-# Kontratı 1 veya 2 yıllık müşterileri Engaged olarak belirtme
 df["NEW_Engaged"] = df["Contract"].apply(lambda x: 1 if x in ["One year","Two year"] else 0)
 
-# Herhangi bir destek, yedek veya koruma almayan kişiler
 df["NEW_noProt"] = df.apply(lambda x: 1 if (x["OnlineBackup"] != "Yes") or (x["DeviceProtection"] != "Yes") or (x["TechSupport"] != "Yes") else 0, axis=1)
 
-# Aylık sözleşmesi bulunan ve genç olan müşteriler
 df["NEW_Young_Not_Engaged"] = df.apply(lambda x: 1 if (x["NEW_Engaged"] == 0) and (x["SeniorCitizen"] == 0) else 0, axis=1)
 
 
-# Kişinin toplam aldığı servis sayısı
 df['NEW_TotalServices'] = (df[['PhoneService', 'InternetService', 'OnlineSecurity',
                                        'OnlineBackup', 'DeviceProtection', 'TechSupport',
                                        'StreamingTV', 'StreamingMovies']]== 'Yes').sum(axis=1)
 
-
-# Herhangi bir streaming hizmeti alan kişiler
 df["NEW_FLAG_ANY_STREAMING"] = df.apply(lambda x: 1 if (x["StreamingTV"] == "Yes") or (x["StreamingMovies"] == "Yes") else 0, axis=1)
 
-# Kişi otomatik ödeme yapıyor mu?
 df["NEW_FLAG_AutoPayment"] = df["PaymentMethod"].apply(lambda x: 1 if x in ["Bank transfer (automatic)","Credit card (automatic)"] else 0)
 
-# ortalama aylık ödeme
 df["NEW_AVG_Charges"] = df["TotalCharges"] / df["tenure"]
 
-# Güncel Fiyatın ortalama fiyata göre artışı
 df["NEW_Increase"] = df["NEW_AVG_Charges"] / df["MonthlyCharges"]
 
-# Servis başına ücret
 df["NEW_AVG_Service_Fee"] = df["MonthlyCharges"] / (df['NEW_TotalServices'] + 1)
 
 
@@ -500,11 +344,11 @@ df.head()
 df.shape
 
 
+
 ##################################
 # ENCODING
 ##################################
 
-# Değişkenlerin tiplerine göre ayrılması işlemi
 cat_cols, num_cols, cat_but_car = grab_col_names(df)
 
 # LABEL ENCODING
@@ -534,10 +378,11 @@ df = one_hot_encoder(df, cat_cols, drop_first=True)
 
 df.head()
 
-##################################
-# MODELLEME
-##################################
 
+
+##################################
+# MODELLING
+##################################
 
 y = df["Churn"]
 X = df.drop(["Churn","customerID"], axis=1)
