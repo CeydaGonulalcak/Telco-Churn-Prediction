@@ -31,7 +31,6 @@ df.head()
 df.shape
 df.info()
 
-# TotalCharges sayısal bir değişken olmalı
 df["TotalCharges"] = pd.to_numeric(df["TotalCharges"], errors='coerce')
 
 df["Churn"] = df["Churn"].apply(lambda x : 1 if x == "Yes" else 0)
